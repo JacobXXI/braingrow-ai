@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import './App.css'
 import { FaHome, FaSearch, FaCog } from 'react-icons/fa'
+import { SearchPage } from './SearchPage'
 
 function App() {
   const [activeScreen, setActiveScreen] = useState('home');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleButtonClick = (screenName: string) => {
     console.log(`${screenName} screen requested`);
@@ -13,13 +15,15 @@ function App() {
   const renderScreen = () => {
     switch(activeScreen) {
       case 'search':
-        return <div className="screen">Search Screen Content</div>;
+        return <SearchPage 
+          searchQuery={searchQuery} 
+          onSearchChange={setSearchQuery} 
+        />;
       case 'settings':
         return <div className="screen">Settings Screen Content</div>;
       default:
         return <div className="screen">
           <h1>Braingrow AI!</h1>
-          {/* Home screen content goes here */}
         </div>;
     }
   };
