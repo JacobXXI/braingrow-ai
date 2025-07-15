@@ -58,6 +58,84 @@
   border-top: 1px solid #dee2e6;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  gap: 1rem;
+}
+
+.logo-container {
+  flex-shrink: 0;
+}
+
+.logo-container .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #1a73e8;
+}
+
+.search-container {
+  flex-grow: 1;
+  max-width: 400px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  border-radius: 4px;
+  border: 1px solid #dadce0;
+  font-size: 0.9rem;
+}
+
+.search-button {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #5f6368;
+  cursor: pointer;
+}
+
+.header-auth {
+  display: flex;
+  gap: 1rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.button.neutral.small {
+  background-color: #f1f3f4;
+  color: #3c4043;
+}
+
+.button.neutral.small:hover {
+  background-color: #e8eaed;
+}
+
+.button.primary.small {
+  background-color: #1a73e8;
+  color: #ffffff;
+}
+
+.button.primary.small:hover {
+  background-color: #1765cc;
+}
+
 .nav-button {
   flex: 1;
   display: flex;

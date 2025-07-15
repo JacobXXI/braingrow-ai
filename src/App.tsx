@@ -1,58 +1,57 @@
 import { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css'
-import { FaHome, FaSearch, FaCog } from 'react-icons/fa'
+import { FaCog, FaSearch } from 'react-icons/fa'
 import { SearchPage } from './SearchPage'
+import { HomePage } from './HomePage';
+import WatchPage from './WatchPage';
 
 function App() {
-  const [activeScreen, setActiveScreen] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-  const handleButtonClick = (screenName: string) => {
-    console.log(`${screenName} screen requested`);
-    setActiveScreen(screenName);
+  const handleSearch = () => {
+    navigate('/search', { state: { searchQuery } });
   };
 
-  const renderScreen = () => {
-    switch(activeScreen) {
-      case 'search':
-        return <SearchPage 
-          searchQuery={searchQuery} 
-          onSearchChange={setSearchQuery} 
-        />;
-      case 'settings':
-        return <div className="screen">Settings Screen Content</div>;
-      default:
-        return <div className="screen">
-          <h1>Braingrow AI!</h1>
-        </div>;
-    }
+  const handleLogoClick = () => {
+    navigate('/');
   };
 
   return (
-    <>
-      {renderScreen()}
-      <div className="bottom-nav">
-        <button 
-          className="nav-button"
-          onClick={() => handleButtonClick('home')}
-        >
-          <FaHome size={24} />
-        </button>
-        <button 
-          className="nav-button"
-          onClick={() => handleButtonClick('search')}
-        >
-          <FaSearch size={24} />
-        </button>
-        <button 
-          className="nav-button"
-          onClick={() => handleButtonClick('settings')}
-        >
-          <FaCog size={24} />
-        </button>
-      </div>
-    </>
-  )
+    <div className="app-container">
+      <header className="header">
+        <div className="logo-container" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+          <div className="logo">Braingrow AI</div>
+        </div>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <button 
+            className="search-button"
+            onClick={handleSearch}
+          >
+            <FaSearch size={20} />
+          </button>
+        </div>
+        <div className="header-auth">
+          <button className="button neutral small" title="Settings">
+            <FaCog size={20} />
+          </button>
+        </div>
+      </header>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/search" element={<SearchPage searchQuery={searchQuery} onSearchChange={setSearchQuery} />} />
+        <Route path="/watch/:id" element={<WatchPage />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App
