@@ -1,10 +1,19 @@
 import { video } from './structures/video';
 
-export const search = async (query: string): Promise<video> => {
-  const response = await fetch(`/api/search?query=${query}`);
+const API_BASE = 'http://localhost:8080'; // Change this to your backend URL if needed
+
+export const search = async (query: string): Promise<video[]> => {
+  const response = await fetch(`${API_BASE}/api/search?query=${encodeURIComponent(query)}`);
+  if (!response.ok) throw new Error('Search failed');
   return response.json();
 };
 
+export const getVideo = async (id: string): Promise<video> => {
+  const response = await fetch(`${API_BASE}/api/videos/${encodeURIComponent(id)}`);
+  if (!response.ok) throw new Error('Get video failed');
+  return response.json();
+};
+/*
 export const getVideo = async (id: string): Promise<video> => {
   // Mock implementation since API doesn't exist
   return {
