@@ -13,6 +13,8 @@ export const getVideo = async (id: string): Promise<video> => {
   if (!response.ok) throw new Error('Get video failed');
   return response.json();
 };
+
+// The following is a mock implementation for reference only:
 /*
 export const getVideo = async (id: string): Promise<video> => {
   // Mock implementation since API doesn't exist
@@ -30,3 +32,4 @@ export const getVideo = async (id: string): Promise<video> => {
     coverUrl: 'https://example.com/cover.jpg'
   };
 };
+*/
