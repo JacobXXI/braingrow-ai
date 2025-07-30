@@ -86,7 +86,7 @@ export const getVideo = async (id: string): Promise<video> => {
     coverUrl: rawData.coverUrl
   };
 };
-
+*/
 export const signup = async (email: string, password: string, name: string): Promise<{ success: boolean; token?: string }> => {
   try {
     const response = await fetch('https://localhost:3000/api/signup', {
@@ -174,4 +174,4 @@ export const addComment = async (videoId: string, text: string): Promise<{ succe
     return { success: false };
   }
 };
-*/
+
