@@ -159,6 +159,7 @@
 }
 
 .logout-button {
+  width: 150px;
   background-color: #ff4d4f;
   color: white;
   border: none;

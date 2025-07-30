@@ -33,10 +33,10 @@ export default function WatchPage() {
         </div>
         <div className="video-actions">
           <button className="action-button like-button">
-            <span>👍 {video.likes.toString()}</span>
+            <span>👍 {video.likes?.toString()}</span>
           </button>
           <button className="action-button dislike-button">
-            <span>👎 {video.dislikes.toString()}</span>
+            <span>👎 {video.dislikes?.toString()}</span>
           </button>
         </div>
       </div>
@@ -46,12 +46,12 @@ export default function WatchPage() {
         
         <div className="video-meta">
           <div className="video-stats">
-            <span className="views">👁️ {video.views.toString()} views</span>
+            {video.views != null && <span className="views">👁️ {video.views.toString()} views</span>}
             <span className="upload-date">📅 {video.date.toLocaleDateString()}</span>
           </div>
           
           <div className="video-author">
-            <span className="author">👤 {video.author}</span>
+            {video.author != null && <span className="author">👤 {video.author}</span>}
             <span className="category">🏷️ {video.category}</span>
           </div>
         </div>

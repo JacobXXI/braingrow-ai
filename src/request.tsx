@@ -38,8 +38,27 @@ export const isAuthenticated = (): boolean => {
   return !!Cookies.get('authToken');
 };
 
-export const search = async (query: string): Promise<video[]> => {
-  const response = await fetch(`${API_BASE}/api/search?query=${encodeURIComponent(query)}`);
+export const getRecommandVideo = async(maxVideo: number = 10): Promise<video[]> => {
+  const response = await fetch(`${API_BASE}/api/recommendations?maxVideo=${maxVideo}`);
+  if (!response.ok) throw new Error('Get recommand video failed');
+  const rawData = await response.json();
+  return rawData.map((item: any) => ({
+    _id: item.id,
+    title: item.title,
+    description: item.description,
+    author: item.creator,
+    date: new Date(item.publishedAt),
+    category: item.category,
+    views: item.viewCount,
+    likes: item.likeCount,
+    dislikes: item.dislikeCount,
+    url: item.videoUrl,
+    coverUrl: new URL(item.imageUrl, API_BASE).href
+  }));
+}
+
+export const search = async (query: string, maxVideo: number = 10): Promise<video[]> => {
+  const response = await fetch(`${API_BASE}/api/search?query=${encodeURIComponent(query)}&maxVideo=${maxVideo}`);
   if (!response.ok) throw new Error('Search failed');
   const rawData = await response.json();
   // Convert raw API response to required video format
@@ -54,12 +73,12 @@ export const search = async (query: string): Promise<video[]> => {
     likes: item.likeCount,
     dislikes: item.dislikeCount,
     url: item.videoUrl,
-    coverUrl: item.imageUrl
+    coverUrl: new URL(item.imageUrl, API_BASE).href
   }));
 };
 
 export const getVideo = async (id: string): Promise<video> => {
-  const response = await fetch(`${API_BASE}/api/videos/${encodeURIComponent(id)}`);
+  const response = await fetch(`${API_BASE}/api/video/${encodeURIComponent(id)}`);
   if (!response.ok) throw new Error('Get video failed');
   const rawData = await response.json();
   // Convert raw API response to required video format
