@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { video } from './structures/video';
 
-const apiEndpoint = "https://localhost:3000/api";
+const API_BASE = 'http://localhost:8080';
 
 export const login = async (email: string, password: string): Promise<{ success: boolean; token?: string }> => {
   try {
@@ -39,36 +39,42 @@ export const isAuthenticated = (): boolean => {
 };
 
 export const search = async (query: string): Promise<video[]> => {
-  // Mock implementation returning array of videos
-  return [{
-    _id: 'search-1',
-    title: `Search result for: ${query}`,
-    description: 'This is a search result video',
-    author: 'Braingrow Team',
-    date: new Date(),
-    category: 'Search Results',
-    views: 450,
-    likes: 30,
-    dislikes: 2,
-    url: 'https://example.com/search-video.mp4',
-    coverUrl: 'https://example.com/search-cover.jpg'
-  }];
+  const response = await fetch(`${API_BASE}/api/search?query=${encodeURIComponent(query)}`);
+  if (!response.ok) throw new Error('Search failed');
+  const rawData = await response.json();
+  // Convert raw API response to required video format
+  return rawData.map((item: any) => ({
+    _id: item.id,
+    title: item.title,
+    description: item.description,
+    author: item.creator,
+    date: new Date(item.publishedAt),
+    category: item.category,
+    views: item.viewCount,
+    likes: item.likeCount,
+    dislikes: item.dislikeCount,
+    url: item.videoUrl,
+    coverUrl: item.thumbnailUrl
+  }));
 };
 
 export const getVideo = async (id: string): Promise<video> => {
-  // Mock implementation since API doesn't exist
+  const response = await fetch(`${API_BASE}/api/videos/${encodeURIComponent(id)}`);
+  if (!response.ok) throw new Error('Get video failed');
+  const rawData = await response.json();
+  // Convert raw API response to required video format
   return {
-    _id: id,
-    title: 'Example Video Tutorial',
-    description: 'This is an example video demonstrating our platform features',
-    author: 'Braingrow Team',
-    date: new Date(),
-    category: 'Tutorial',
-    views: 1000,
-    likes: 150,
-    dislikes: 5,
-    url: 'https://example.com/video.mp4',
-    coverUrl: 'https://example.com/cover.jpg'
+    _id: rawData.id,
+    title: rawData.title,
+    description: rawData.description,
+    author: rawData.creator,
+    date: new Date(rawData.publishedAt),
+    category: rawData.category,
+    views: rawData.viewCount,
+    likes: rawData.likeCount,
+    dislikes: rawData.dislikeCount,
+    url: rawData.videoUrl,
+    coverUrl: rawData.thumbnailUrl
   };
 };
 
