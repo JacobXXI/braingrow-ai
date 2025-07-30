@@ -37,6 +37,7 @@ export const logout = (): void => {
 export const isAuthenticated = (): boolean => {
   return !!Cookies.get('authToken');
 };
+const API_BASE = 'http://localhost:8080'; // Change this to your backend URL if needed
 
 export const search = async (query: string): Promise<video[]> => {
   const response = await fetch(`${API_BASE}/api/search?query=${encodeURIComponent(query)}`);
@@ -56,6 +57,7 @@ export const search = async (query: string): Promise<video[]> => {
     url: item.videoUrl,
     coverUrl: item.imageUrl
   }));
+  return response.json();
 };
 
 export const getVideo = async (id: string): Promise<video> => {
@@ -63,6 +65,13 @@ export const getVideo = async (id: string): Promise<video> => {
   if (!response.ok) throw new Error('Get video failed');
   const rawData = await response.json();
   // Convert raw API response to required video format
+  return response.json();
+};
+
+// The following is a mock implementation for reference only:
+/*
+export const getVideo = async (id: string): Promise<video> => {
+  // Mock implementation since API doesn't exist
   return {
     _id: rawData.id,
     title: rawData.title,
@@ -165,3 +174,4 @@ export const addComment = async (videoId: string, text: string): Promise<{ succe
     return { success: false };
   }
 };
+*/
