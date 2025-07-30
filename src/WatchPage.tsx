@@ -9,27 +9,54 @@ export default function WatchPage() {
   const { id } = useParams();
   const [video, setVideo] = useState<video | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [videoError, setVideoError] = useState<string | null>(null); // Add error state
 
   useEffect(() => {
-    if (location.state?.video) {
-      setVideo(location.state.video);
-    } else if (id) {
+    // Reset state when component mounts or id changes
+    setVideo(null);
+    setIsLoading(true);
+    setVideoError(null);
+
+    if (id) {
+      // This path will now always execute
       setIsLoading(true);
       getVideo(id)
-        .then((videoData: video) => setVideo(videoData))
-        .catch((error: unknown) => console.error('Error fetching video:', error))
+        .then((videoData: video) => {
+          if (!videoData.url) {
+            throw new Error('Video URL is missing');
+          }
+          setVideo(videoData);
+          console.log('Fetched video object:', videoData);
+        })
+        .catch((error: unknown) => {
+          console.error('Error fetching video:', error);
+          setVideoError(error instanceof Error ? error.message : 'Failed to load video data');
+        })
         .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+      setVideoError('No video ID provided');
     }
   }, [id, location.state]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading video...</div>;
+  if (videoError) return <div className="error-message">Error: {videoError}</div>;
   if (!video) return <div>Video not found</div>;
+  if (!video.url) return <div>Invalid video source - no URL provided</div>;
 
   return (
     <div className="watch-container">
       <div className="video-player-container">
         <div className="video-player">
-          <video controls src={video.url} poster={video.coverUrl} />
+          <video 
+            controls 
+            src={video.url} 
+            poster={video.coverUrl} 
+            onError={(e) => {
+              setVideoError('Failed to load video player');
+              console.error('Video element error:', e);
+            }}
+          />
         </div>
         <div className="video-actions">
           <button className="action-button like-button">

@@ -6,12 +6,15 @@ const API_BASE = 'http://localhost:8080';
 export const login = async (email: string, password: string): Promise<{ success: boolean; token?: string }> => {
   try {
     // Send API request to login endpoint
-    const response = await fetch('https://localhost:3000/api/login', {
+    const response = await fetch(`${API_BASE}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ 
+        email: email,
+        password: password
+      }),
     });
 
     const data = await response.json();
@@ -72,7 +75,7 @@ export const search = async (query: string, maxVideo: number = 10): Promise<vide
     views: item.viewCount,
     likes: item.likeCount,
     dislikes: item.dislikeCount,
-    url: item.videoUrl,
+    url: item.url,
     coverUrl: new URL(item.imageUrl, API_BASE).href
   }));
 };
@@ -92,8 +95,8 @@ export const getVideo = async (id: string): Promise<video> => {
     views: rawData.viewCount,
     likes: rawData.likeCount,
     dislikes: rawData.dislikeCount,
-    url: rawData.videoUrl,
-    coverUrl: rawData.coverUrl
+    url: new URL(rawData.url, API_BASE).href,
+    coverUrl: new URL(rawData.coverUrl, API_BASE).href
   };
 };
 

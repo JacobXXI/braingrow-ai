@@ -27,8 +27,8 @@ export function HomePage() {
   }, []);
 
     const handleVideoClick = (video: video) => {
-    // 问题在于未使用从 react-router-dom 导入的 useNavigate hook，下面添加对 navigate 的初始化
-    navigate(`/watch/${video._id}`, { state: { video } });
+    // Remove the state object to force API fetch
+    navigate(`/watch/${video._id}`);
   };
 
   if (loading) return <div className="loading">Loading recommended videos...</div>;
@@ -59,7 +59,6 @@ export function HomePage() {
               <div className="video-metadata">
                 {video.author && <span className="video-author">👤 {video.author}</span>}
                 {video.views != null && <span className="video-views">👁️ {video.views}</span>}
-                <span className="video-date">{formatRelativeDate(new Date(video.date))}</span>
               </div>
             </div>
           </div>
@@ -67,20 +66,4 @@ export function HomePage() {
       </div>
     </div>
   );
-}
-
-function formatRelativeDate(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffMins < 60) {
-    return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-  } else if (diffHours < 12) {
-    return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-  } else {
-    return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-  }
 }

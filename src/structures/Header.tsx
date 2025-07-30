@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Add useLocation
 import { search, login, logout, isAuthenticated } from '../request';
 import logo from '../assets/logo.png';
 import './Header.css';
@@ -9,11 +9,12 @@ const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Add location hook
 
-  // Check authentication status on component mount
+  // Check authentication status on mount and when location changes
   useEffect(() => {
     setIsLoggedIn(isAuthenticated());
-  }, []);
+  }, [location.pathname]); // Add location dependency
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
