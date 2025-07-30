@@ -54,7 +54,7 @@ export const search = async (query: string): Promise<video[]> => {
     likes: item.likeCount,
     dislikes: item.dislikeCount,
     url: item.videoUrl,
-    coverUrl: item.thumbnailUrl
+    coverUrl: item.imageUrl
   }));
 };
 
@@ -74,7 +74,7 @@ export const getVideo = async (id: string): Promise<video> => {
     likes: rawData.likeCount,
     dislikes: rawData.dislikeCount,
     url: rawData.videoUrl,
-    coverUrl: rawData.thumbnailUrl
+    coverUrl: rawData.coverUrl
   };
 };
 
