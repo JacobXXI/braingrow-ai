@@ -9,7 +9,7 @@ const SearchPage: React.FC = () => {
   const [videos, setVideos] = useState<video[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const query = searchParams.get('q') || '';
+  const query = searchParams.get('query') || '';
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -30,24 +30,29 @@ const SearchPage: React.FC = () => {
   }, [query]);
 
   return (
-    <div className="search-page">
-      <h1 className="page-title">Search Result</h1>
-
+    <div className="search-page screen">
+      <h1>Search Result for "{query}"</h1>
       {loading ? (
         <div className="loading">Loading results...</div>
       ) : videos.length > 0 ? (
-        <div className="results-container">
+        <div className="video-container">
           {videos.map((video) => (
             <div 
               key={video._id} 
               className="video-item" 
               onClick={() => navigate(`/watch/${video._id}`)}
             >
-              <img src={video.coverUrl} alt={video.title} className="thumbnail" />
-              <div className="video-info">
-                <h3 className="title">{video.title}</h3>
-                <p className="author">{video.author}</p>
-                <p className="stats">{video.views} views • {video.likes} likes</p>
+              <div className="video-image-container">
+                <img src={video.coverUrl} alt={video.title} className="video-cover-image" />
+              </div>
+              <div className="video-details">
+                <h3 className="video-title">{video.title}</h3>
+                <p className="video-description">{video.description || 'No description available'}</p>
+                <div className="video-metadata">
+                  <span className="video-author">👤 {video.author}</span>
+                  <span className="video-views">👁️ {video.views} views</span>
+                  <span className="video-likes">❤️ {video.likes} likes</span>
+                </div>
               </div>
             </div>
           ))}

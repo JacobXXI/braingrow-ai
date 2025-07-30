@@ -1,8 +1,8 @@
 /* Search Bar Styles */
 .search-bar-container {
   position: relative;
-  width: 400px;
   display: flex;
+  width: 100%;
 }
 
 .search-input {
@@ -93,8 +93,9 @@
 .header {
   display: flex;
   align-items: center;
+  padding: 0 2rem;
+  height: 80px;
   justify-content: space-between;
-  padding: 1rem 2rem;
   background-color: #ffffff;
   border-bottom: 1px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -119,7 +120,7 @@
 
 .login-button {
   width: 150px;
-  padding: 0.5rem 1.25rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
   background-color: #ffffff;
@@ -131,7 +132,7 @@
 
 .signup-button {
   width: 150px;
-  padding: 0.5rem 1.25rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
   background-color: #1a73e8;
@@ -170,4 +171,17 @@
 
 .logout-button:hover {
   background-color: #ff7875;
+}
+
+.search-container {
+  display: flex;
+  flex: 1;
+  margin: 0 0 0 1rem;
+  min-width: 0;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
 }

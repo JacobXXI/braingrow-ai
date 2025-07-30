@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -161,6 +160,12 @@
 }
 
 /* Layout Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -169,7 +174,7 @@
 
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 2rem 0 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -178,6 +183,8 @@
   border-radius: 12px;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .video-container {
@@ -195,8 +202,10 @@
 
 .screen {
   padding: 2rem;
-  margin-bottom: 60px; /* 为底部导航留出空间 */
   min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .bottom-nav {
@@ -451,6 +460,10 @@ body {
 .video-content-container {
   padding: 0;
   margin: 0;
+  body {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .video-item {

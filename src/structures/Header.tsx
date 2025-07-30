@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     e.preventDefault();
     const query = searchQuery.trim();
     if (query) {
-      navigate(`/search?q=${encodeURIComponent(query)}`);
+      navigate(`/search?query=${encodeURIComponent(query)}`);
     }
   };
 
@@ -42,7 +42,6 @@ const Header: React.FC = () => {
     <header className="header">
       <div className="header-logo" onClick={() => navigate('/')}>
         <img src={logo} alt="Logo" className="logo-image" />
-        <span className="logo-text">BrainGrow AI</span>
       </div>
 
       <div className="search-container">

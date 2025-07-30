@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
-
 import { video } from './structures/video';
+
+const apiEndpoint = "https://localhost:3000/api";
 
 export const login = async (email: string, password: string): Promise<{ success: boolean; token?: string }> => {
   try {
@@ -69,4 +70,92 @@ export const getVideo = async (id: string): Promise<video> => {
     url: 'https://example.com/video.mp4',
     coverUrl: 'https://example.com/cover.jpg'
   };
+};
+
+export const signup = async (email: string, password: string, name: string): Promise<{ success: boolean; token?: string }> => {
+  try {
+    const response = await fetch('https://localhost:3000/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password, name }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.token) {
+      Cookies.set('authToken', data.token, { expires: 7, secure: true, sameSite: 'strict' });
+      return { success: true, token: data.token };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error('Signup error:', error);
+    return { success: false };
+  }
+};
+
+export const likeVideo = async (videoId: string): Promise<{ success: boolean; likes?: number }> => {
+  try {
+    const token = Cookies.get('authToken');
+    if (!token) return { success: false };
+
+    const response = await fetch(`https://localhost:3000/api/videos/${videoId}/like`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+    return { success: response.ok, likes: data.likes };
+  } catch (error) {
+    console.error('Like error:', error);
+    return { success: false };
+  }
+};
+
+export const dislikeVideo = async (videoId: string): Promise<{ success: boolean; dislikes?: number }> => {
+  try {
+    const token = Cookies.get('authToken');
+    if (!token) return { success: false };
+
+    const response = await fetch(`https://localhost:3000/api/videos/${videoId}/dislike`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+    return { success: response.ok, dislikes: data.dislikes };
+  } catch (error) {
+    console.error('Dislike error:', error);
+    return { success: false };
+  }
+};
+
+export const addComment = async (videoId: string, text: string): Promise<{ success: boolean; comment?: any }> => {
+  try {
+    const token = Cookies.get('authToken');
+    if (!token) return { success: false };
+
+    const response = await fetch(`https://localhost:3000/api/videos/${videoId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ text })
+    });
+
+    const data = await response.json();
+    return { success: response.ok, comment: data.comment };
+  } catch (error) {
+    console.error('Add comment error:', error);
+    return { success: false };
+  }
 };
